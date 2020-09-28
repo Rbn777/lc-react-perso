@@ -41,7 +41,8 @@ export const Input = styled.input`
 `;
 
 export const Button = styled.button`
-  background-color: ${colors.primary};
+  background-color: ${({ showLoading }) =>
+    showLoading ? "#fff" : colors.primary};
   color: #fff;
   padding: 0.5em 1em;
   border-radius: 4px;

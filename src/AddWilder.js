@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Button, Error, Form, Input, Label } from "./styles/form-elements";
+import loadIcon from "./icons/hourglass.svg";
 
 function AddWilder() {
   const [name, setName] = useState("");
   const [city, setCity] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   return (
     <Form
       onSubmit={async (e) => {
         e.preventDefault();
         try {
+          setLoading(true);
           const result = await axios.post(
             "http://localhost:5000/api/wilder/create",
             {
@@ -18,7 +21,6 @@ function AddWilder() {
               city,
             }
           );
-          console.log(result);
           if (result.data.success) {
             setError("");
           }
@@ -28,6 +30,8 @@ function AddWilder() {
           } else {
             setError(error.message);
           }
+        } finally {
+          setLoading(false);
         }
       }}
     >
@@ -48,7 +52,9 @@ function AddWilder() {
         onChange={(e) => setCity(e.target.value)}
       />
       {error !== "" && <Error>{error}</Error>}
-      <Button>Add</Button>
+      <Button showLoading={loading}>
+        {loading ? <img src={loadIcon} alt="loading" /> : "Add"}
+      </Button>
     </Form>
   );
 }

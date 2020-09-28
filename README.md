@@ -29,3 +29,4 @@
 - Form structure and style
 - Control input with useState
 - POST the form data
+- Handle loading
