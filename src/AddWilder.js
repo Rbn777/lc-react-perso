@@ -8,12 +8,15 @@ function AddWilder() {
   const [city, setCity] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [delayed, setDelayed] = useState(false);
   return (
     <Form
       onSubmit={async (e) => {
         e.preventDefault();
         try {
+          setDelayed(true);
           setLoading(true);
+          setTimeout(() => setDelayed(false), 1000);
           const result = await axios.post(
             "http://localhost:5000/api/wilder/create",
             {
@@ -52,8 +55,8 @@ function AddWilder() {
         onChange={(e) => setCity(e.target.value)}
       />
       {error !== "" && <Error>{error}</Error>}
-      <Button disabled={loading} showLoading={loading}>
-        {loading ? <LoadingIcon /> : "Add"}
+      <Button disabled={loading} showLoading={loading && !delayed}>
+        {loading && !delayed ? <LoadingIcon /> : "Add"}
       </Button>
     </Form>
   );

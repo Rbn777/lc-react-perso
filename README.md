@@ -31,4 +31,5 @@
 - POST the form data
 - Handle loading
 - Fix loading svg issue
+- Fix flash loading issue
 
