@@ -30,3 +30,5 @@
 - Control input with useState
 - POST the form data
 - Handle loading
+- Fix loading svg issue
+

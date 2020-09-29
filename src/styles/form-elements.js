@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { colors } from "./globals";
 
 export const Form = styled.form`
@@ -40,6 +40,16 @@ export const Input = styled.input`
   ${focus}
 `;
 
+const rotate = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
 export const Button = styled.button`
   background-color: ${({ showLoading }) =>
     showLoading ? "#fff" : colors.primary};
@@ -48,6 +58,12 @@ export const Button = styled.button`
   border-radius: 4px;
   display: inline-block;
   ${focus}
+  svg {
+    width: 47px !important;
+    height: 47px !important;
+    animation: ${rotate} 2s linear infinite;
+    animation-play-state: running !important;
+  }
 `;
 
 export const Error = styled.p`

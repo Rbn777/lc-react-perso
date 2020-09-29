@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Button, Error, Form, Input, Label } from "./styles/form-elements";
-import loadIcon from "./icons/hourglass.svg";
+import { ReactComponent as LoadingIcon } from "./icons/hourglass.svg";
 
 function AddWilder() {
   const [name, setName] = useState("");
@@ -52,8 +52,8 @@ function AddWilder() {
         onChange={(e) => setCity(e.target.value)}
       />
       {error !== "" && <Error>{error}</Error>}
-      <Button showLoading={loading}>
-        {loading ? <img src={loadIcon} alt="loading" /> : "Add"}
+      <Button disabled={loading} showLoading={loading}>
+        {loading ? <LoadingIcon /> : "Add"}
       </Button>
     </Form>
   );
