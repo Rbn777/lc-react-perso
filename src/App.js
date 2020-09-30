@@ -1,12 +1,21 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./App.css";
-import { CardRow, Container, Footer, Header } from "./styles/elements";
+import {
+  CardRow,
+  Container,
+  Footer,
+  Header,
+  ShowButton,
+} from "./styles/elements";
 import Wilder from "./Wilder";
 import AddWilder from "./AddWilder";
+import { ReactComponent as PlusCircle } from "./icons/add-circle.svg";
+import { ReactComponent as MinusCircle } from "./icons/minus-circle.svg";
 
 function App() {
   const [wilders, setWilders] = useState([]);
+  const [showAddForm, setShowAddForm] = useState(false);
 
   useEffect(() => {
     const fetchWilders = async () => {
@@ -29,7 +38,10 @@ function App() {
         </Container>
       </Header>
       <Container>
-        <AddWilder />
+        <ShowButton onClick={() => setShowAddForm(!showAddForm)}>
+          {showAddForm ? <MinusCircle /> : <PlusCircle />}
+        </ShowButton>
+        {showAddForm && <AddWilder />}
       </Container>
       <Container>
         <h2>Wilders</h2>

@@ -32,4 +32,4 @@
 - Handle loading
 - Fix loading svg issue
 - Fix flash loading issue
-
+- Show / Hide form

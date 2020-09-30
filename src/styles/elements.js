@@ -85,3 +85,11 @@ export const Badge = styled.span`
   height: 20px;
   width: 20px;
 `;
+
+export const ShowButton = styled.button`
+  background-color: ${colors.primary};
+  svg {
+    height: 20px;
+    width: 20px;
+  }
+`;
