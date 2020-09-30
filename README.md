@@ -33,3 +33,5 @@
 - Fix loading svg issue
 - Fix flash loading issue
 - Show / Hide form
+- Hide form and show message when successfully added
+

@@ -66,9 +66,18 @@ export const Button = styled.button`
   }
 `;
 
-export const Error = styled.p`
-  background-color: red;
-  color: #fff;
+const messageStyle = `
+color: #fff;
   padding: 0.5em 1em;
   border-radius: 4px;
+`;
+
+export const Success = styled.p`
+  background-color: green;
+  ${messageStyle}
+`;
+
+export const Error = styled.p`
+  background-color: red;
+  ${messageStyle}
 `;

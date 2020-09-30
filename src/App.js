@@ -12,10 +12,12 @@ import Wilder from "./Wilder";
 import AddWilder from "./AddWilder";
 import { ReactComponent as PlusCircle } from "./icons/add-circle.svg";
 import { ReactComponent as MinusCircle } from "./icons/minus-circle.svg";
+import { Success } from "./styles/form-elements";
 
 function App() {
   const [wilders, setWilders] = useState([]);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
     const fetchWilders = async () => {
@@ -29,6 +31,7 @@ function App() {
 
     fetchWilders();
   }, []);
+  const closeForm = () => setShowAddForm(false);
 
   return (
     <div>
@@ -41,7 +44,16 @@ function App() {
         <ShowButton onClick={() => setShowAddForm(!showAddForm)}>
           {showAddForm ? <MinusCircle /> : <PlusCircle />}
         </ShowButton>
-        {showAddForm && <AddWilder />}
+        {showAddForm ? (
+          <AddWilder
+            onSuccess={(message) => {
+              closeForm();
+              setSuccessMessage(message);
+            }}
+          />
+        ) : (
+          successMessage !== "" && <Success>{successMessage}</Success>
+        )}
       </Container>
       <Container>
         <h2>Wilders</h2>
