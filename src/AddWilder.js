@@ -41,9 +41,7 @@ function AddWilder({ onSuccess }) {
           setLoading(false);
           if (result.data.success) {
             setError("");
-            onSuccess(
-              `The wilder ${result.data.result.name} has been successfully added`
-            );
+            onSuccess(result.data.result);
           }
         } catch (error) {
           setLoading(false);

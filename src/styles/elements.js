@@ -22,6 +22,18 @@ export const CardRow = styled.section`
   justify-content: space-between;
 `;
 
+const newStyle = `{
+  border-color: hsl(${colors.focus.h}, ${colors.focus.s}, ${colors.focus.l});
+  box-shadow: 0 0 0 3px
+    hsla(
+      ${colors.focus.h},
+      ${colors.focus.s},
+      calc(${colors.focus.l} + 40%),
+      0.8
+    );
+  outline: 3px solid transparent;
+}`;
+
 export const Card = styled.article`
   padding: 20px;
   border: 1px solid #c9c9c9;
@@ -50,6 +62,7 @@ export const Card = styled.article`
     color: #757575;
     line-height: 1.5;
   }
+  ${({ newCard }) => newCard && newStyle}
 `;
 
 export const List = styled.ul`
