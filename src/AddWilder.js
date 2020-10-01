@@ -1,28 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { Button, Error, Form, Input, Label } from "./styles/form-elements";
 import { ReactComponent as LoadingIcon } from "./icons/hourglass.svg";
+import useDelay from "./hooks/useDelay";
 
 function AddWilder({ onSuccess }) {
   const [name, setName] = useState("");
   const [city, setCity] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [delayed, setDelayed] = useState(false);
+  const [delayed, setDelayed] = useDelay(500);
   
   
-  useEffect(() => {
-    // Happens when a dependency changes
-    if (delayed) {
-      const timer = setTimeout(() => {setDelayed(false);}, 500);
-      
-      return function cleanup(){
-        // Happens when the component unmounts
-        clearTimeout(timer)
-      }
-    }
-    
-  },[delayed]);
 
   return (
     <Form
