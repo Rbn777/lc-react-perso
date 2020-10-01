@@ -35,3 +35,5 @@
 - Show / Hide form
 - Hide form and show message when successfully added
 - Wrong fix for the Timeout update state issue
+- Right fix for the Timeout update state issue
+

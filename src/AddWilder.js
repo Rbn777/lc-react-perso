@@ -10,15 +10,19 @@ function AddWilder({ onSuccess }) {
   const [loading, setLoading] = useState(false);
   const [delayed, setDelayed] = useState(false);
   
-  let timer = null;
-
+  
   useEffect(() => {
-    return function cleanup() {
-      // what is happening here ?
-      console.log("timer cleaning",timer)
-      clearTimeout(timer);
-    };
-  },[timer]);
+    // Happens when a dependency changes
+    if (delayed) {
+      const timer = setTimeout(() => {setDelayed(false);}, 500);
+      
+      return function cleanup(){
+        // Happens when the component unmounts
+        clearTimeout(timer)
+      }
+    }
+    
+  },[delayed]);
 
   return (
     <Form
@@ -27,9 +31,6 @@ function AddWilder({ onSuccess }) {
         try {
           setDelayed(true);
           setLoading(true);
-          // Delay by 2000ms to see the issue
-          timer = setTimeout(() => {setDelayed(false);}, 2000);
-          console.log("timer creation", timer)
           const result = await axios.post(
             "http://localhost:5000/api/wilder/create",
             {
