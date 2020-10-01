@@ -34,4 +34,4 @@
 - Fix flash loading issue
 - Show / Hide form
 - Hide form and show message when successfully added
-
+- Wrong fix for the Timeout update state issue

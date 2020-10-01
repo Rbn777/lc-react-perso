@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Button, Error, Form, Input, Label } from "./styles/form-elements";
 import { ReactComponent as LoadingIcon } from "./icons/hourglass.svg";
@@ -9,6 +9,17 @@ function AddWilder({ onSuccess }) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [delayed, setDelayed] = useState(false);
+  
+  let timer = null;
+
+  useEffect(() => {
+    return function cleanup() {
+      // what is happening here ?
+      console.log("timer cleaning",timer)
+      clearTimeout(timer);
+    };
+  },[timer]);
+
   return (
     <Form
       onSubmit={async (e) => {
@@ -16,14 +27,17 @@ function AddWilder({ onSuccess }) {
         try {
           setDelayed(true);
           setLoading(true);
-          setTimeout(() => setDelayed(false), 1000);
+          // Delay by 2000ms to see the issue
+          timer = setTimeout(() => {setDelayed(false);}, 2000);
+          console.log("timer creation", timer)
           const result = await axios.post(
             "http://localhost:5000/api/wilder/create",
             {
               name,
               city,
-            }
+              }
           );
+          setLoading(false);
           if (result.data.success) {
             setError("");
             onSuccess(
@@ -31,13 +45,12 @@ function AddWilder({ onSuccess }) {
             );
           }
         } catch (error) {
+          setLoading(false);
           if (error.response) {
             setError(error.response.data.message);
           } else {
             setError(error.message);
           }
-        } finally {
-          setLoading(false);
         }
       }}
     >
