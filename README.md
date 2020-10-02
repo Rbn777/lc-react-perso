@@ -40,3 +40,6 @@
 - Make a custom hook for delay
 - Make a custom hook for Wilder Creation
 
+### From useState to useReducer
+
+- Show / Hide the add form

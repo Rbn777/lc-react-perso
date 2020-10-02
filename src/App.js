@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import axios from "axios";
 import "./App.css";
 import {
@@ -14,10 +14,25 @@ import { ReactComponent as PlusCircle } from "./icons/add-circle.svg";
 import { ReactComponent as MinusCircle } from "./icons/minus-circle.svg";
 import { Success } from "./styles/form-elements";
 
+const initialState = {
+  showAddForm: false,
+};
+const appReducer = (state, action) => {
+  switch (action.type) {
+    case "TOGGLE_SHOW_ADD_FORM":
+      return { showAddForm: !state.showAddForm };
+    case "CLOSE_ADD_FORM":
+      return { showAddForm: false };
+    default:
+      return state;
+  }
+};
+
 function App() {
   const [wilders, setWilders] = useState([]);
-  const [showAddForm, setShowAddForm] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+
+  const [state, dispatch] = useReducer(appReducer, initialState);
 
   useEffect(() => {
     const fetchWilders = async () => {
@@ -31,7 +46,6 @@ function App() {
 
     fetchWilders();
   }, []);
-  const closeForm = () => setShowAddForm(false);
 
   return (
     <div>
@@ -41,13 +55,13 @@ function App() {
         </Container>
       </Header>
       <Container>
-        <ShowButton onClick={() => setShowAddForm(!showAddForm)}>
-          {showAddForm ? <MinusCircle /> : <PlusCircle />}
+        <ShowButton onClick={() => dispatch({ type: "TOGGLE_SHOW_ADD_FORM" })}>
+          {state.showAddForm ? <MinusCircle /> : <PlusCircle />}
         </ShowButton>
-        {showAddForm ? (
+        {state.showAddForm ? (
           <AddWilder
             onSuccess={(newWilder) => {
-              closeForm();
+              dispatch({ type: "CLOSE_ADD_FORM" });
               setSuccessMessage(
                 `The wilder ${newWilder.name} has been successfully added`
               );
