@@ -44,3 +44,4 @@
 
 - Show / Hide the add form
 - Handle everything with appReducer
+- Use context to avoid passing props

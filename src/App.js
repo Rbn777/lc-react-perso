@@ -1,6 +1,11 @@
 import React, { useEffect, useReducer } from "react";
 import axios from "axios";
 import "./App.css";
+import Wilder from "./Wilder";
+import AddWilder from "./AddWilder";
+import appReducer from "./reducers/appReducer";
+import AppContext from "./context/AppContext";
+import { Success } from "./styles/form-elements";
 import {
   CardRow,
   Container,
@@ -8,33 +13,13 @@ import {
   Header,
   ShowButton,
 } from "./styles/elements";
-import Wilder from "./Wilder";
-import AddWilder from "./AddWilder";
 import { ReactComponent as PlusCircle } from "./icons/add-circle.svg";
 import { ReactComponent as MinusCircle } from "./icons/minus-circle.svg";
-import { Success } from "./styles/form-elements";
 
 const initialState = {
   showAddForm: false,
   successMessage: "",
   wilders: [],
-};
-const appReducer = (state, action) => {
-  switch (action.type) {
-    case "TOGGLE_SHOW_ADD_FORM":
-      return { ...state, showAddForm: !state.showAddForm };
-    case "WILDER_ADDED":
-      return {
-        ...state,
-        showAddForm: false,
-        successMessage: `The wilder ${action.newWilder.name} has been successfully added`,
-        wilders: [{ ...action.newWilder, justAdded: true }, ...state.wilders],
-      };
-    case "WILDERS_FETCH_SUCCESS":
-      return { ...state, wilders: action.wilders };
-    default:
-      return state;
-  }
 };
 
 function App() {
@@ -64,20 +49,20 @@ function App() {
         </Container>
       </Header>
       <Container>
-        <ShowButton onClick={() => dispatch({ type: "TOGGLE_SHOW_ADD_FORM" })}>
-          {state.showAddForm ? <MinusCircle /> : <PlusCircle />}
-        </ShowButton>
-        {state.showAddForm ? (
-          <AddWilder
-            onSuccess={(newWilder) =>
-              dispatch({ type: "WILDER_ADDED", newWilder })
-            }
-          />
-        ) : (
-          state.successMessage !== "" && (
-            <Success>{state.successMessage}</Success>
-          )
-        )}
+        <AppContext.Provider value={dispatch}>
+          <ShowButton
+            onClick={() => dispatch({ type: "TOGGLE_SHOW_ADD_FORM" })}
+          >
+            {state.showAddForm ? <MinusCircle /> : <PlusCircle />}
+          </ShowButton>
+          {state.showAddForm ? (
+            <AddWilder />
+          ) : (
+            state.successMessage !== "" && (
+              <Success>{state.successMessage}</Success>
+            )
+          )}
+        </AppContext.Provider>
       </Container>
       <Container>
         <h2>Wilders</h2>

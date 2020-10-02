@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
 import useDelay from "./useDelay";
+import AppContext from "../context/AppContext";
 
-function useCreateWilder(onSuccess) {
+function useCreateWilder() {
+  const dispatch = useContext(AppContext);
   const [name, setName] = useState("");
   const [city, setCity] = useState("");
   const [error, setError] = useState("");
@@ -24,7 +26,10 @@ function useCreateWilder(onSuccess) {
       setLoading(false);
       if (result.data.success) {
         setError("");
-        onSuccess(result.data.result);
+        dispatch({
+          type: "WILDER_ADDED",
+          newWilder: result.data.result,
+        });
       }
     } catch (error) {
       setLoading(false);
