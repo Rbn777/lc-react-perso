@@ -1,5 +1,4 @@
-import React, { useEffect, useReducer } from "react";
-import axios from "axios";
+import React, { useReducer } from "react";
 import "./App.css";
 import Wilder from "./Wilder";
 import AddWilder from "./AddWilder";
@@ -15,6 +14,7 @@ import {
 } from "./styles/elements";
 import { ReactComponent as PlusCircle } from "./icons/add-circle.svg";
 import { ReactComponent as MinusCircle } from "./icons/minus-circle.svg";
+import useFetchWilders from "./hooks/useFetchWilders";
 
 const initialState = {
   showAddForm: false,
@@ -24,22 +24,7 @@ const initialState = {
 
 function App() {
   const [state, dispatch] = useReducer(appReducer, initialState);
-
-  useEffect(() => {
-    const fetchWilders = async () => {
-      try {
-        const result = await axios("http://localhost:5000/api/wilder/read");
-        dispatch({
-          type: "WILDERS_FETCH_SUCCESS",
-          wilders: result.data.result,
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchWilders();
-  }, []);
+  useFetchWilders(dispatch);
 
   return (
     <div>
