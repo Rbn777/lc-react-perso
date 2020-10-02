@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useReducer } from "react";
 import axios from "axios";
 import "./App.css";
 import {
@@ -16,29 +16,38 @@ import { Success } from "./styles/form-elements";
 
 const initialState = {
   showAddForm: false,
+  successMessage: "",
+  wilders: [],
 };
 const appReducer = (state, action) => {
   switch (action.type) {
     case "TOGGLE_SHOW_ADD_FORM":
-      return { showAddForm: !state.showAddForm };
-    case "CLOSE_ADD_FORM":
-      return { showAddForm: false };
+      return { ...state, showAddForm: !state.showAddForm };
+    case "WILDER_ADDED":
+      return {
+        ...state,
+        showAddForm: false,
+        successMessage: `The wilder ${action.newWilder.name} has been successfully added`,
+        wilders: [{ ...action.newWilder, justAdded: true }, ...state.wilders],
+      };
+    case "WILDERS_FETCH_SUCCESS":
+      return { ...state, wilders: action.wilders };
     default:
       return state;
   }
 };
 
 function App() {
-  const [wilders, setWilders] = useState([]);
-  const [successMessage, setSuccessMessage] = useState("");
-
   const [state, dispatch] = useReducer(appReducer, initialState);
 
   useEffect(() => {
     const fetchWilders = async () => {
       try {
         const result = await axios("http://localhost:5000/api/wilder/read");
-        setWilders(result.data.result);
+        dispatch({
+          type: "WILDERS_FETCH_SUCCESS",
+          wilders: result.data.result,
+        });
       } catch (error) {
         console.log(error);
       }
@@ -60,22 +69,20 @@ function App() {
         </ShowButton>
         {state.showAddForm ? (
           <AddWilder
-            onSuccess={(newWilder) => {
-              dispatch({ type: "CLOSE_ADD_FORM" });
-              setSuccessMessage(
-                `The wilder ${newWilder.name} has been successfully added`
-              );
-              setWilders([{ ...newWilder, justAdded: true }, ...wilders]);
-            }}
+            onSuccess={(newWilder) =>
+              dispatch({ type: "WILDER_ADDED", newWilder })
+            }
           />
         ) : (
-          successMessage !== "" && <Success>{successMessage}</Success>
+          state.successMessage !== "" && (
+            <Success>{state.successMessage}</Success>
+          )
         )}
       </Container>
       <Container>
         <h2>Wilders</h2>
         <CardRow>
-          {wilders.map((wilder) => (
+          {state.wilders.map((wilder) => (
             <Wilder key={wilder._id} {...wilder} />
           ))}
         </CardRow>

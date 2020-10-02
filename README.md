@@ -43,3 +43,4 @@
 ### From useState to useReducer
 
 - Show / Hide the add form
+- Handle everything with appReducer
